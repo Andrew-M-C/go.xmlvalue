@@ -5,7 +5,6 @@ import (
 	"encoding/xml"
 	"fmt"
 	"io"
-	"log"
 )
 
 type stack struct {
@@ -50,23 +49,23 @@ func Unmarshal(b []byte) (*V, error) {
 		t, err := decoder.Token()
 		if err != nil {
 			if err == io.EOF {
-				log.Printf("Parse XML finished!")
+				// log.Printf("Parse XML finished!")
 				return root, nil
 			}
-			log.Printf("Failed to Parse XML with the error of %v", err)
+			// log.Printf("Failed to Parse XML with the error of %v", err)
 			return nil, err
 		}
 		t = xml.CopyToken(t)
 
 		switch t := t.(type) {
 		case xml.StartElement:
-			log.Printf("xml.StartElement")
+			// log.Printf("xml.StartElement")
 			name := t.Name.Local
 			item := New(name)
-			log.Printf("name: %s", name)
+			// log.Printf("name: %s", name)
 
 			for _, a := range t.Attr {
-				log.Printf("attr: %s - %s", a.Name.Local, a.Value)
+				// log.Printf("attr: %s - %s", a.Name.Local, a.Value)
 				item.SetAttr(a.Name.Local, a.Value)
 			}
 			if curr != nil {
@@ -78,14 +77,14 @@ func Unmarshal(b []byte) (*V, error) {
 			curr = item
 
 		case xml.EndElement:
-			log.Printf("xml.EndElement")
+			// log.Printf("xml.EndElement")
 			curr = stk.Pop()
 
 		case xml.CharData:
 			b := []byte(t)
 			b = bytes.Trim(b, "\r\n\t ")
 			if len(b) > 0 {
-				log.Printf("xml.CharData: '%s'", string(b))
+				// log.Printf("xml.CharData: '%s'", string(b))
 				if curr != nil {
 					curr.data = b
 				}

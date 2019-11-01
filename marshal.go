@@ -10,6 +10,22 @@ type Opt struct {
 	Indent string
 }
 
+func (x *V) MarshalString(opt ...Opt) (string, error) {
+	b, err := x.Marshal(opt...)
+	if err != nil {
+		return "", err
+	}
+	return string(b), nil
+}
+
+func (x *V) MustMarshalString(opt ...Opt) string {
+	ret, err := x.MarshalString(opt...)
+	if err != nil {
+		panic(err)
+	}
+	return ret
+}
+
 func (x *V) Marshal(opt ...Opt) ([]byte, error) {
 	if nil == x || false == x.initialized {
 		return nil, fmt.Errorf("xmlvalue not initiailzed")

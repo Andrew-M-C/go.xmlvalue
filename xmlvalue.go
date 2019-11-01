@@ -33,21 +33,27 @@ func (x *V) Name() string {
 // 	return
 // }
 
-// Text returns the raw text of this XML element
-func (x *V) Text() []byte {
+// Text returns the text string of this XML element
+func (x *V) Text() string {
 	if nil == x || nil == x.data {
-		return []byte{}
+		return ""
 	}
-	return x.data
+	return string(x.data)
 }
 
-// SetText set raw text of this XML element
-func (x *V) SetText(t []byte) {
-	if nil == t {
-		t = []byte{}
+// SetText set raw text of this XML element. Both string and []byte type are accepted
+func (x *V) SetText(t interface{}) error {
+	switch t.(type) {
+	case nil:
+		return errNilParameter
+	case []byte:
+		x.data = t.([]byte)
+	case string:
+		x.data = []byte(t.(string))
+	default:
+		return errParamInvalidParamType
 	}
-	x.data = t
-	return
+	return nil
 }
 
 // GetAttr read attribute. If a default value given, the default attribute will be set and returned when the attribute does not exist.
