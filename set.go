@@ -32,7 +32,7 @@ func (x *V) AddString(s string) *S {
 	}
 }
 
-// SetInt starts adding a string to specified path
+// SetInt starts setting a integer to specified path
 func (x *V) SetInt(i int) *S {
 	return &S{
 		initialized: true,
@@ -42,7 +42,7 @@ func (x *V) SetInt(i int) *S {
 	}
 }
 
-// AddInt starts adding a string to specified path
+// AddInt starts adding a integer to specified path
 func (x *V) AddInt(i int) *S {
 	return &S{
 		initialized: true,
@@ -52,7 +52,7 @@ func (x *V) AddInt(i int) *S {
 	}
 }
 
-// At sets string to specified path
+// At sets string to specified path. For detail usage and examples, pleas refer to Set() or Add() functions
 func (set *S) At(params ...interface{}) error {
 	if false == set.initialized {
 		return errNotInitialized

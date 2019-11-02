@@ -1,7 +1,6 @@
 package xmlvalue
 
 import (
-	"log"
 	"strconv"
 )
 
@@ -35,7 +34,7 @@ func (x *V) GetInt(params ...interface{}) (int, error) {
 }
 
 func (x *V) getOrCreate(create bool, params ...interface{}) (*V, error) {
-	// log.Printf("create %v, params %v", create, params)
+	// // log.Printf("create %v, params %v", create, params)
 	// here, len(params) is not expected to be zero
 	l := len(params)
 	switch l {
@@ -71,7 +70,7 @@ func (x *V) getOrCreate(create bool, params ...interface{}) (*V, error) {
 }
 
 func (x *V) getOrCreateWithOneParam(create bool, param interface{}) (*V, error) {
-	log.Printf("create %v, param '%v'", create, param)
+	// log.Printf("create %v, param '%v'", create, param)
 	_, s, isString, err := readParam(param)
 	if err != nil {
 		return nil, err
@@ -98,7 +97,7 @@ func (x *V) getOrCreateWithOneParam(create bool, param interface{}) (*V, error) 
 }
 
 func (x *V) getOrCreateWithTwoParams(create bool, param1, param2 interface{}) (*V, error) {
-	// log.Printf("create %v, param1 %v, param2 %v", create, param1, param2)
+	// // log.Printf("create %v, param1 %v, param2 %v", create, param1, param2)
 	// The first one is not supposed to be a interger
 	_, s1, isStr1, err := readParam(param1)
 	if err != nil {

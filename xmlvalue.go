@@ -1,6 +1,13 @@
+// Package xmlvalue is for XML parsing. It is used in situations those Go structures cannot achieve well. Most of the usages are quite simular as jsonvalue. (https://github.com/Andrew-M-C/go.jsonvalue)
+//
+// This package is particularly useful in following situations:
+//
+// 1. Rapidly create an XML document with mutiple level.
+//
+// 2. Parsing XML documents with volatile structures.
 package xmlvalue
 
-// V represents a XML value
+// V represents an XML value
 type V struct {
 	initialized bool
 	name        string
@@ -45,7 +52,7 @@ func (x *V) Text() string {
 func (x *V) SetText(t interface{}) error {
 	switch t.(type) {
 	case nil:
-		return errNilParameter
+		x.data = []byte{}
 	case []byte:
 		x.data = t.([]byte)
 	case string:
@@ -78,22 +85,7 @@ func (x *V) SetAttr(a, v string) {
 }
 
 // addChild add a child
-func (x *V) addChild(c *V, path ...string) {
-	if false == x.initialized {
-		return
-	}
-	if nil == c || false == c.initialized || "" == c.name {
-		// do nothing
-		return
-	}
-
-	// find children
-	curr := x
-	for _, p := range path {
-		curr = curr.getChildOrCreate(p)
-	}
-
-	// set child
+func (x *V) addChild(c *V) {
 	childList, exist := x.children[c.name]
 	if false == exist {
 		childList = []*V{c}
@@ -102,40 +94,6 @@ func (x *V) addChild(c *V, path ...string) {
 		childList = append(childList, c)
 		x.children[c.name] = childList
 	}
-
-	// done
-	return
-}
-
-func (x *V) getChildOrCreate(name string) *V {
-	childList, exist := x.children[name]
-	if false == exist || len(childList) == 0 {
-		c := New(name)
-		childList = []*V{c}
-		x.children[name] = childList
-		return c
-	}
-	return childList[0]
-}
-
-// setChild
-func (x *V) setChild(c *V, path ...string) {
-	if false == x.initialized {
-		return
-	}
-	if nil == c || false == c.initialized || "" == c.name {
-		// do nothing
-		return
-	}
-
-	// find children
-	curr := x
-	for _, p := range path {
-		curr = curr.getChildOrCreate(p)
-	}
-
-	// set child
-	x.children[c.name] = []*V{c}
 
 	// done
 	return

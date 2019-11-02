@@ -34,7 +34,12 @@ func (s *stack) Pop() *V {
 	return ret
 }
 
-// Unmarshal unmarshals a given data and returns a xmlvalue object
+// UnmarshalString is the same as Unmarshal(), but takes string as parameter
+func UnmarshalString(s string) (*V, error) {
+	return Unmarshal([]byte(s))
+}
+
+// Unmarshal parses a given data and returns an xmlvalue object
 func Unmarshal(b []byte) (*V, error) {
 	if nil == b || 0 == len(b) {
 		return nil, fmt.Errorf("nil input")
